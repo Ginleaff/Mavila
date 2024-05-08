@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "testmod",
+	"version": "${version}",
+	"name": "Test Mod",
+	"description": "The Playing Grounds",
+	"authors": [
+		"Ginleaf"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/testmod/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.ginleaf.testmod.TestMod"
+		],
+		"client": [
+			"net.ginleaf.testmod.TestModClient"
+		],
+		"fabric-datagen": [
+			"net.ginleaf.testmod.TestModDataGenerator"
+		]
+	},
+	"mixins": [
+		"testmod.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.20.6",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
