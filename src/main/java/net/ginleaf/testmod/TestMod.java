@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.Instrument;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.*;
@@ -23,11 +24,12 @@ public class TestMod implements ModInitializer {
 	public static final boolean DEBUG = false;
 
 	private static final Identifier PLACER_ID = new Identifier(MOD_ID, "placer");
-
-	public static final PlacerBlock PLACER = new PlacerBlock(Block.Settings.create().mapColor(MapColor.STONE_GRAY).instrument(Instrument.BASEDRUM).requiresTool().strength(3.5f));
-
+	public static final PlacerBlock PLACER = new PlacerBlock(Block.Settings.create()
+			.mapColor(MapColor.STONE_GRAY)
+			.instrument(Instrument.BASEDRUM)
+			.requiresTool().strength(3.5f)
+			.pistonBehavior(PistonBehavior.BLOCK));
 	public static final BlockEntityType<PlacerBlockEntity> PLACER_BLOCK_ENTITY_TYPE = BlockEntityType.Builder.create(PlacerBlockEntity::new, PLACER).build();
-
 	public static final ScreenHandlerType<PlacerScreenHandler> PLACER_SCREEN_HANDLER = new ScreenHandlerType<>(PlacerScreenHandler::new, FeatureFlags.VANILLA_FEATURES);
 
 	@Override
