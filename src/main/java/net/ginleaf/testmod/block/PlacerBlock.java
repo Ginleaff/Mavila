@@ -27,10 +27,19 @@ public class PlacerBlock extends DispenserBlock {
     public static final DirectionProperty FACING = Properties.FACING;
     public static final BooleanProperty TRIGGERED = Properties.TRIGGERED;
     public static final MapCodec<PlacerBlock> CODEC = PlacerBlock.createCodec(PlacerBlock::new);
+    private boolean placing = false;
 
     public PlacerBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH).with(TRIGGERED, false));
+    }
+
+    public boolean isPlacing() {
+        return this.placing;
+    }
+
+    public void setStatus(boolean status) {
+        this.placing = status;
     }
 
     protected boolean isBlocked(Direction direction, World world, BlockPos pos) {
@@ -74,6 +83,8 @@ public class PlacerBlock extends DispenserBlock {
         ItemStack itemStack = placerBlockEntity.getStack(i);
         BlockPointer placerPointer = new BlockPointer(world,pos,state,placerBlockEntity);
         PlacerPlacementBehavior placerBehavior = new PlacerPlacementBehavior();
+        setStatus(true);
         placerBlockEntity.setStack(i, placerBehavior.dispense(placerPointer,itemStack));
+        setStatus(false);
     }
 }

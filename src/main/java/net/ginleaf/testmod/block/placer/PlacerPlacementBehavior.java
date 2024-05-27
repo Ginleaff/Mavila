@@ -3,6 +3,7 @@ package net.ginleaf.testmod.block.placer;
 import net.ginleaf.testmod.item.PlacerItemPlacementContext;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
+import net.minecraft.block.dispenser.ItemDispenserBehavior;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -13,10 +14,7 @@ import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPointer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.event.GameEvent;
 
 public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
@@ -27,16 +25,15 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
         BlockPos placePos = pointer.pos().offset(pointer.state().get(Properties.FACING));
         Item item = stack.getItem();
         this.setSuccess(false);
-
-        if (item instanceof BlockItem && isBlockItemMovable((BlockItem) item)) {
+        if (item instanceof BlockItem && isPlacerPlaceable((BlockItem) item)) {
             placeBlock(pointer,stack,placePos);
 
         } else if (item instanceof BoatItem) {
-            boolean hasChest = item.getDefaultStack().getRegistryEntry().isIn(ItemTags.CHEST_BOATS);
             /* Listen, I know this is super cursed.
-            But an Interface/Hashset implementation will fail to support modded boats without interacting with my mod, which is no go.
+            But an Interface/HashMap implementation will fail to support modded boats without interacting with my mod, which is no go.
             This should provide support, but if there's an incorrect ID, hell will break.
-            I'll see about properly implementing this in the future. Don't write an issue about this. */
+            Feel free to suggest a better implementation. */
+            boolean hasChest = item.getDefaultStack().getRegistryEntry().isIn(ItemTags.CHEST_BOATS);
             String boatID = item.toString();
             if (boatID.contains("chest")) {
                 boatID = boatID.substring(0,boatID.indexOf("chest")-1);
@@ -51,11 +48,10 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
         } else if (item instanceof SpawnEggItem) {
             placeSpawnEgg(pointer,stack,placePos);
         }
-
         return stack;
     }
 
-    private boolean isBlockItemMovable(BlockItem item) {
+    private boolean isPlacerPlaceable(BlockItem item) {
         Block itemBlock = item.getBlock();
         if (
                 itemBlock.equals(Blocks.PISTON)
@@ -85,18 +81,17 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
         Direction direction = pointer.state().get(Properties.FACING);
         ServerWorld world = pointer.world();
         Item item = stack.getItem();
-
         Direction blockFacingDirection = world.isAir(placePos.down()) || !world.getFluidState(placePos.down()).isEmpty() ? direction : Direction.UP;
         try {
             this.setSuccess(((BlockItem) item).place(new PlacerItemPlacementContext(world, placePos, direction, stack, blockFacingDirection)).isAccepted());
         } catch (Exception exception) {
-            LOGGER.error("Error trying to place shulker box at {}", placePos, exception);
+            LOGGER.error("Error while dispensing {} from Placer at {}", stack.getItem().getName().toString(), placePos, exception);
         }
     }
 
     private void placeBoat(BlockPointer pointer, ItemStack stack, BlockPos placePos,boolean chest, BoatEntity.Type variant) {
         double h;
-        Direction direction = pointer.state().get(DispenserBlock.FACING);
+        Direction direction = pointer.state().get(Properties.FACING);
         ServerWorld world = pointer.world();
         Vec3d vec3d = pointer.centerPos();
         double d = 0.5625 + (double) EntityType.BOAT.getWidth() / 2.0;
@@ -105,7 +100,7 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
         double g = vec3d.getZ() + (double)direction.getOffsetZ() * d;
         if (world.getFluidState(placePos).isIn(FluidTags.WATER)) {
             h = 1.0;
-        } else if (world.getBlockState(placePos).isAir()) {
+        } else if (!isPlacementBlocked(pointer,placePos)) {
             h = 0.0;
         } else {
             return;
@@ -117,25 +112,40 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
         world.spawnEntity(boatEntity);
         stack.decrement(1);
         this.setSuccess(true);
-
     }
 
     private void placeBucket(BlockPointer pointer, ItemStack stack, BlockPos placePos) {
-
+        FluidModificationItem fluidModificationItem = (FluidModificationItem)(stack.getItem());
+        Direction direction = pointer.state().get(Properties.FACING);
+        ServerWorld world = pointer.world();
+        if (fluidModificationItem.placeFluid(null, world, placePos, null)) {
+            fluidModificationItem.onEmptied(null, world, stack, placePos);
+            stack.decrement(1);
+            ItemDispenserBehavior.spawnItem(pointer.world(), new ItemStack(Items.BUCKET, 1), 3, direction, DispenserBlock.getOutputLocation(pointer));
+            this.setSuccess(true);
+        }
     }
 
     private void placeSpawnEgg(BlockPointer pointer, ItemStack stack, BlockPos placePos) {
         Direction direction = pointer.state().get(DispenserBlock.FACING);
         EntityType<?> entityType = ((SpawnEggItem)stack.getItem()).getEntityType(stack);
+        if (isPlacementBlocked(pointer,placePos)) {
+            return;
+        }
         try {
             entityType.spawnFromItemStack(pointer.world(), stack, null, placePos, SpawnReason.DISPENSER, direction != Direction.UP, false);
         } catch (Exception exception) {
-            LOGGER.error("Error while dispensing spawn egg from placer at {}", pointer.pos(), exception);
+            LOGGER.error("Error while dispensing {} from Placer at {}", stack.getItem().getName().toString(), placePos, exception);
             stack.setCount(0);
             return;
         }
         stack.decrement(1);
         pointer.world().emitGameEvent(null, GameEvent.ENTITY_PLACE, pointer.pos());
         this.setSuccess(true);
+    }
+
+    private boolean isPlacementBlocked(BlockPointer pointer, BlockPos placePos) {
+        ServerWorld world = pointer.world();
+        return !world.isSpaceEmpty(new Box(placePos));
     }
 }
