@@ -1,6 +1,7 @@
 package net.ginleaf.testmod.item;
 
 import net.ginleaf.testmod.block.PlacerBlock;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.AutomaticItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -28,24 +29,26 @@ public class PlacerItemPlacementContext extends AutomaticItemPlacementContext {
     /*
     This method is responsible for handling Floor Skulls.
 
-    This had to be done because there is no system for supporting Vec3D horizontal axis with directional placement without an entity.
-    This fails when more than one Placer is placed around an activated Placer, even though it should be only checking...
-    ...for a Placer currently placing the skull, even if they aren't activated.
-    This is a fine sacrifise and works correctly under 99.9% of circumstances.
+    A bug occurs when already triggered Placers are nearby, and while it's a shame, it would have cost a useless property just for this one...
+    ...niche check that no one will even notice or abuse.
     If you know a solution to this issue, please suggest it.
      */
     @Override
     public float getPlayerYaw() {
-        if (getWorld().getBlockState(getBlockPos().offset(Direction.NORTH)).getBlock() instanceof PlacerBlock placerBlock && placerBlock.isPlacing()) {
+        BlockState northState = getWorld().getBlockState(getBlockPos().offset(Direction.NORTH));
+        if (northState.getBlock() instanceof PlacerBlock && northState.get(PlacerBlock.TRIGGERED)) {
             return Direction.NORTH.getHorizontal() * 90;
         }
-        if (getWorld().getBlockState(getBlockPos().offset(Direction.WEST)).getBlock() instanceof PlacerBlock placerBlock && placerBlock.isPlacing()) {
+        BlockState westState = getWorld().getBlockState(getBlockPos().offset(Direction.WEST));
+        if (westState.getBlock() instanceof PlacerBlock && westState.get(PlacerBlock.TRIGGERED)) {
             return Direction.WEST.getHorizontal() * 90;
         }
-        if (getWorld().getBlockState(getBlockPos().offset(Direction.SOUTH)).getBlock() instanceof PlacerBlock placerBlock && placerBlock.isPlacing()) {
+        BlockState southState = getWorld().getBlockState(getBlockPos().offset(Direction.SOUTH));
+        if (southState.getBlock() instanceof PlacerBlock && southState.get(PlacerBlock.TRIGGERED)) {
             return Direction.SOUTH.getHorizontal() * 90;
         }
-        if (getWorld().getBlockState(getBlockPos().offset(Direction.EAST)).getBlock() instanceof PlacerBlock placerBlock && placerBlock.isPlacing()) {
+        BlockState eastState = getWorld().getBlockState(getBlockPos().offset(Direction.EAST));
+        if (eastState.getBlock() instanceof PlacerBlock && eastState.get(PlacerBlock.TRIGGERED)) {
             return Direction.EAST.getHorizontal() * 90;
         }
         return 0;

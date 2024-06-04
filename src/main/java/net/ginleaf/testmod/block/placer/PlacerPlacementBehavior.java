@@ -1,5 +1,6 @@
 package net.ginleaf.testmod.block.placer;
 
+import net.ginleaf.testmod.block.PlacerBlock;
 import net.ginleaf.testmod.item.PlacerItemPlacementContext;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
@@ -19,20 +20,19 @@ import net.minecraft.world.event.GameEvent;
 
 public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
 
-
+    /* I know, the Boat placing check is really cursed.
+    It should provide support for modded boats, but if there's an incorrect ID, hell will break.
+    Feel free to suggest a better implementation. */
     @Override
     protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
         BlockPos placePos = pointer.pos().offset(pointer.state().get(Properties.FACING));
         Item item = stack.getItem();
         this.setSuccess(false);
+
         if (item instanceof BlockItem && isPlacerPlaceable((BlockItem) item)) {
             placeBlock(pointer,stack,placePos);
 
         } else if (item instanceof BoatItem) {
-            /* Listen, I know this is super cursed.
-            But an Interface/HashMap implementation will fail to support modded boats without interacting with my mod, which is no go.
-            This should provide support, but if there's an incorrect ID, hell will break.
-            Feel free to suggest a better implementation. */
             boolean hasChest = item.getDefaultStack().getRegistryEntry().isIn(ItemTags.CHEST_BOATS);
             String boatID = item.toString();
             if (boatID.contains("chest")) {
@@ -49,6 +49,12 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
             placeSpawnEgg(pointer,stack,placePos);
         }
         return stack;
+    }
+
+    @Override
+    protected void spawnParticles(BlockPointer pointer, Direction side) {
+        if (!this.isSuccess()) return;
+
     }
 
     private boolean isPlacerPlaceable(BlockItem item) {
