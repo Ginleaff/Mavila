@@ -1,6 +1,5 @@
 package net.ginleaf.testmod.block.placer;
 
-import net.ginleaf.testmod.block.PlacerBlock;
 import net.ginleaf.testmod.item.PlacerItemPlacementContext;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
