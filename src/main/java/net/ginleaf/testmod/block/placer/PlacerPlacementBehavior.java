@@ -1,6 +1,6 @@
 package net.ginleaf.testmod.block.placer;
 
-import net.ginleaf.testmod.item.PlacerItemPlacementContext;
+import net.ginleaf.testmod.TestMod;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -16,6 +16,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.*;
 import net.minecraft.world.event.GameEvent;
+
+import java.util.Random;
 
 public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
 
@@ -53,7 +55,26 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
     @Override
     protected void spawnParticles(BlockPointer pointer, Direction side) {
         if (!this.isSuccess()) return;
-
+        Direction ventSide = side.getOpposite();
+        Random random = new Random();
+        BlockPos pos = pointer.pos();
+        ServerWorld world = pointer.world();
+        int i = ventSide.getOffsetX();
+        int j = ventSide.getOffsetY();
+        int k = ventSide.getOffsetZ();
+        double d = (double)pos.getX() + (double)i * 0.75 + 0.5;
+        double e = (double)pos.getY() + (double)j * 0.6 + 0.5;
+        double f = (double)pos.getZ() + (double)k * 0.75 + 0.5;
+        for (int l = 0; l < 5; ++l) {
+            double g = random.nextDouble() * 0.2 + 0.01;
+            double h = d + (double)i * 0.01 + (random.nextDouble() - 0.5) * (double)k * 0.5;
+            double m = e + (double)j * 0.01 + (random.nextDouble() - 0.5) * (double)j * 0.5;
+            double n = f + (double)k * 0.01 + (random.nextDouble() - 0.5) * (double)i * 0.5;
+            double o = (double)i * g + random.nextGaussian() * 0.01;
+            double p = (double)j * g + random.nextGaussian() * 0.01;
+            double q = (double)k * g + random.nextGaussian() * 0.01;
+            world.spawnParticles(TestMod.VENT_SMOKE, h, m, n,1,o,p,q,0.055);
+        }
     }
 
     private boolean isPlacerPlaceable(BlockItem item) {
@@ -88,7 +109,7 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
         Item item = stack.getItem();
         Direction blockFacingDirection = world.isAir(placePos.down()) || !world.getFluidState(placePos.down()).isEmpty() ? direction : Direction.UP;
         try {
-            this.setSuccess(((BlockItem) item).place(new PlacerItemPlacementContext(world, placePos, direction, stack, blockFacingDirection)).isAccepted());
+            this.setSuccess(((BlockItem) item).place(new AutomaticSkullPlacementContext(world, placePos, direction, stack, blockFacingDirection)).isAccepted());
         } catch (Exception exception) {
             LOGGER.error("Error while dispensing {} from Placer at {}", stack.getItem().getName().toString(), placePos, exception);
         }
