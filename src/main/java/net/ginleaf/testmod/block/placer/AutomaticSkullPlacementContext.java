@@ -1,6 +1,7 @@
 package net.ginleaf.testmod.block.placer;
 
 import net.ginleaf.testmod.block.PlacerBlock;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.AutomaticItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -38,7 +39,8 @@ public class AutomaticSkullPlacementContext extends AutomaticItemPlacementContex
     public float getPlayerYaw() {
         for(int i=2;i<=5;i++) {
             Direction horizontalDirection = Direction.byId(i);
-            if (getWorld().getBlockState(getBlockPos().offset(horizontalDirection)).getBlock() instanceof PlacerBlock placerBlock && placerBlock.isPlacing()) {
+            BlockState state = getWorld().getBlockState(getBlockPos().offset(horizontalDirection));
+            if (state.getBlock() instanceof PlacerBlock && state.get(PlacerBlock.TRIGGERED)) {
                 return horizontalDirection.getHorizontal() * 90;
             }
         }

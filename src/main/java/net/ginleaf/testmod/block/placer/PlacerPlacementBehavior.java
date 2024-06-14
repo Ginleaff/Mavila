@@ -54,7 +54,7 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
 
     @Override
     protected void spawnParticles(BlockPointer pointer, Direction side) {
-        //if (!this.isSuccess()) return;
+        if (!this.isSuccess()) return;
         Direction ventSide = side.getOpposite();
         Random random = new Random();
         BlockPos pos = pointer.pos();
