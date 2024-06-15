@@ -1,9 +1,0 @@
-{
-  "parent": "testmod:block/placer_orientable",
-  "textures": {
-    "front": "testmod:block/placer_front",
-    "side": "minecraft:block/furnace_side",
-    "top": "minecraft:block/furnace_top",
-    "back": "testmod:block/placer_vent"
-  }
-}

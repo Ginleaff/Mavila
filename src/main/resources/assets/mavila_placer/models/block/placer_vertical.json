@@ -1,0 +1,8 @@
+{
+  "parent": "mavila_placer:block/placer_orientable_vertical",
+  "textures": {
+    "front": "mavila_placer:block/placer_front_vertical",
+    "side": "minecraft:block/furnace_top",
+    "back": "mavila_placer:block/placer_vent_vertical"
+  }
+}

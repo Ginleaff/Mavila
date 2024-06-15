@@ -1,32 +1,32 @@
 {
 	"schemaVersion": 1,
-	"id": "testmod",
+	"id": "mavila_placer",
 	"version": "${version}",
-	"name": "Test Mod",
-	"description": "The Playing Grounds",
+	"name": "The Placer",
+	"description": "Adds the Placer",
 	"authors": [
 		"Ginleaf"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/Ginleaff/TestMod"
+		"sources": "https://github.com/Ginleaff/MavilaPlacer"
 	},
 	"license": "MIT",
-	"icon": "assets/testmod/icon.png",
+	"icon": "assets/mavila_placer/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.ginleaf.testmod.TestMod"
+			"net.ginleaf.mavila_placer.MavilaPlacer"
 		],
 		"client": [
-			"net.ginleaf.testmod.TestModClient"
+			"net.ginleaf.mavila_placer.MavilaPlacerClient"
 		],
 		"fabric-datagen": [
-			"net.ginleaf.testmod.TestModDataGenerator"
+			"net.ginleaf.mavila_placer.MavilaPlacerDataGenerator"
 		]
 	},
 	"mixins": [
-		"testmod.mixins.json"
+		"mavila_placer.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.11",

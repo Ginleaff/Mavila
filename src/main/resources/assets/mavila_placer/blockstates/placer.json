@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "mavila_placer:block/placer_vertical",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "mavila_placer:block/placer",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "mavila_placer:block/placer"
+    },
+    "facing=south": {
+      "model": "mavila_placer:block/placer",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "mavila_placer:block/placer_vertical"
+    },
+    "facing=west": {
+      "model": "mavila_placer:block/placer",
+      "y": 270
+    }
+  }
+}
+
