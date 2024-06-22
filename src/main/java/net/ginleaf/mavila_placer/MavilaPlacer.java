@@ -23,10 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MavilaPlacer implements ModInitializer {
+
 	public static final String MOD_ID = "mavila_placer";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static final boolean DEBUG = false;
-
 	private static final Identifier PLACER_ID = new Identifier(MOD_ID, "placer");
 	public static final Identifier INSPECT_PLACER = new Identifier(MOD_ID, "inspect_placer");
 	public static final PlacerBlock PLACER = new PlacerBlock(Block.Settings.create()

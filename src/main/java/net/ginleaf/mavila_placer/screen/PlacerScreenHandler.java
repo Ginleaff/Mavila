@@ -42,17 +42,11 @@ public class PlacerScreenHandler extends ScreenHandler {
 
     @Override
     public boolean canUse(PlayerEntity player) {
-        if(MavilaPlacer.DEBUG) {
-            MavilaPlacer.LOGGER.info("PlacerScreenHandler.canUse() ran!");
-        }
         return this.inventory.canPlayerUse(player);
     }
 
     @Override
     public ItemStack quickMove(PlayerEntity player, int invSlot) {
-        if(MavilaPlacer.DEBUG) {
-            MavilaPlacer.LOGGER.info("PlacerScreenHandler.quickMove() ran!");
-        }
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
         if (slot.hasStack()) {
