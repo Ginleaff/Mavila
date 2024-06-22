@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 
 public class PlacerScreen extends HandledScreen<PlacerScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier(MavilaPlacer.MOD_ID, "textures/gui/container/placer.png");
+    private static final Identifier TEXTURE = Identifier.of(MavilaPlacer.MOD_ID, "textures/gui/container/placer.png");
 
     public PlacerScreen(PlacerScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);

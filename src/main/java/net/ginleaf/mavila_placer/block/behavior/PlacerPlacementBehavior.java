@@ -36,10 +36,10 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
         } else if (item instanceof BoatItem) {
             boolean hasChest = item.getDefaultStack().getRegistryEntry().isIn(ItemTags.CHEST_BOATS);
             String boatID = item.toString();
-            if (boatID.contains("chest")) {
-                boatID = boatID.substring(0,boatID.indexOf("chest")-1);
+            if (boatID.contains("chest_")) {
+                boatID = boatID.substring(boatID.indexOf(':')+1,boatID.indexOf("chest_")-1);
             } else {
-                boatID = boatID.substring(0,boatID.indexOf("boat")-1);
+                boatID = boatID.substring(boatID.indexOf(':')+1,boatID.length()-5);
             }
             placeBoat(pointer,stack,placePos,hasChest,BoatEntity.Type.getType(boatID));
 
