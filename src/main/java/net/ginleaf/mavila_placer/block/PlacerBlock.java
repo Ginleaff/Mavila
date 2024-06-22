@@ -35,8 +35,10 @@ public class PlacerBlock extends DispenserBlock {
     protected boolean isBlocked(Direction direction, World world, BlockPos pos) {
         if (pos.offset(direction).getY() < world.getBottomY() || pos.offset(direction).getY() > world.getTopY() - 1 || !world.getWorldBorder().contains(pos.offset(direction))) return true;
         if (!world.getBlockState(pos.offset(direction.getOpposite())).getFluidState().isEmpty()) return true;
-        VoxelShape blockBehindVent = world.getBlockState(pos.offset(direction.getOpposite())).getCollisionShape(world,pos);
-        return Block.isFaceFullSquare(blockBehindVent, direction);
+        BlockState stateBehindVent = world.getBlockState(pos.offset(direction.getOpposite()));
+        if(stateBehindVent.getBlock() instanceof TranslucentBlock) return false;
+        VoxelShape faceBehindVent = stateBehindVent.getCollisionShape(world,pos);
+        return Block.isFaceFullSquare(faceBehindVent, direction);
     }
 
     public MapCodec<? extends PlacerBlock> getCodec() {
