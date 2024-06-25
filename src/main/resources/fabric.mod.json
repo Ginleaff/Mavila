@@ -1,40 +1,18 @@
 {
 	"schemaVersion": 1,
-	"id": "mavila_placer",
+	"id": "mavila",
 	"version": "${version}",
-	"name": "The Placer",
-	"description": "Adds the Placer",
+	"name": "Mavila",
+	"description": "Mavila: a collection of well-integrated mechanics and blocks.",
 	"authors": [
 		"Ginleaf"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/Ginleaff/MavilaPlacer"
+		"homepage": "https://modrinth.com/user/Ginleaff",
+		"sources": "https://github.com/Ginleaff/Mavila",
+		"issues": "https://github.com/Ginleaff/Mavila/issues"
 	},
 	"license": "MIT",
-	"icon": "assets/mavila_placer/icon.png",
+	"icon": "assets/mavila/icon.png",
 	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"net.ginleaf.mavila_placer.MavilaPlacer"
-		],
-		"client": [
-			"net.ginleaf.mavila_placer.MavilaPlacerClient"
-		],
-		"fabric-datagen": [
-			"net.ginleaf.mavila_placer.MavilaPlacerDataGenerator"
-		]
-	},
-	"mixins": [
-		"mavila_placer.mixins.json"
-	],
-	"depends": {
-		"fabricloader": ">=0.15.11",
-		"minecraft": "~1.21",
-		"java": ">=21",
-		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
-	}
 }
