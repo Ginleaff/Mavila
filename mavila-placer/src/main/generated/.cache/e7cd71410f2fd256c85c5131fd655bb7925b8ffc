@@ -1,3 +1,3 @@
-// 1.20.6	2024-06-15T19:16:25.178736901	The Placer/Recipes
-b9ae5ce6fa0b505b04264de0ab9b2e3553a9ef56 data/mavila_placer/recipes/placer.json
-f4ae71884ac6bb21a03f3097577d118b1138aefc data/mavila_placer/advancements/recipes/redstone/placer.json
+// 1.21	2024-07-27T06:15:52.104955036	The Placer/Recipes
+f4ae71884ac6bb21a03f3097577d118b1138aefc data/mavila_placer/advancement/recipes/redstone/placer.json
+b9ae5ce6fa0b505b04264de0ab9b2e3553a9ef56 data/mavila_placer/recipe/placer.json

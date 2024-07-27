@@ -3,7 +3,7 @@
 	"id": "mavila",
 	"version": "${version}",
 	"name": "Mavila",
-	"description": "Mavila: a collection of well-integrated mechanics and blocks.",
+	"description": "Mavila: Flat",
 	"authors": [
 		"Ginleaf"
 	],
@@ -14,5 +14,5 @@
 	},
 	"license": "MIT",
 	"icon": "assets/mavila/icon.png",
-	"environment": "*",
+	"environment": "*"
 }
