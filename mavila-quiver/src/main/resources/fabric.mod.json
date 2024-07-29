@@ -1,30 +1,33 @@
 {
 	"schemaVersion": 1,
-	"id": "mavila_placer",
+	"id": "mavila_quiver",
 	"version": "${version}",
-	"name": "Placer",
-	"description": "Adds a Redstone block capable of placing blocks in a balanced way, including unique interactions.",
+	"name": "Quiver",
+	"description": "Adds a Quiver capable of storing and drawing arrows from as long as it's in your inventory.",
 	"authors": [
 		"Ginleaf"
 	],
 	"contact": {
 		"homepage": "https://modrinth.com/user/Ginleaff",
-		"sources": "https://github.com/Ginleaff/Mavila/mavila-placer"
+		"sources": "https://github.com/Ginleaff/Mavila/mavila-quiver"
 	},
 	"license": "MIT",
-	"icon": "assets/mavila_placer/icon.png",
+	"icon": "assets/mavila_quiver/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"mod.ginleaf.placer.Placer"
+			"mod.ginleaf.quiver.Quiver"
 		],
 		"client": [
-			"mod.ginleaf.placer.PlacerClient"
+			"mod.ginleaf.quiver.QuiverClient"
 		],
 		"fabric-datagen": [
-			"mod.ginleaf.placer.PlacerDataGenerator"
+			"mod.ginleaf.quiver.QuiverDataGenerator"
 		]
 	},
+	"mixins": [
+		"quiver.mixins.json"
+	],
 	"depends": {
 		"fabricloader": ">=0.15.11",
 		"minecraft": "~1.21",

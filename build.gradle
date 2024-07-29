@@ -4,12 +4,13 @@
 
 plugins {
 	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'maven-publish'
 }
 
 base {
-	archivesName = mod_name
+	archivesName = archives_base_name
 }
-group = mod_group
+group = maven_group
 
 subprojects {
 	apply plugin: 'fabric-loom'
@@ -18,11 +19,9 @@ subprojects {
 		archivesName = project.name
 	}
 	group = "${rootProject.group}.${base.archivesName}"
-
-	fabricApi {
-		configureDataGeneration()
-	}
 }
+
+subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
 
 allprojects {
 	apply plugin: "fabric-loom"
@@ -37,7 +36,7 @@ allprojects {
 		modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 		subprojects.each {
-			api project(path: ":${it.name}")
+			api project(path: ":${it.name}", configuration: "namedElements")
 			include project(":${it.name}")
 		}
 	}
@@ -57,11 +56,15 @@ allprojects {
 
 	java {
 		withSourcesJar()
+		sourceCompatibility = JavaVersion.VERSION_21
+		targetCompatibility = JavaVersion.VERSION_21
 	}
 
 	jar {
 		from("LICENSE") {
-			rename { "${it}_${base.archivesName.get()}"}
+			rename { "${it}_${archives_base_name}"}
 		}
 	}
+
+	subprojects.each { remapJar.dependsOn("${it.path}:remapJar") }
 }

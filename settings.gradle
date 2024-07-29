@@ -4,9 +4,11 @@ pluginManagement {
 			name = 'Fabric'
 			url = 'https://maven.fabricmc.net/'
 		}
+		mavenCentral()
 		gradlePluginPortal()
 	}
 }
-rootProject.name = mod_name
+rootProject.name = archives_base_name
 
+include 'mavila-quiver'
 include 'mavila-placer'
