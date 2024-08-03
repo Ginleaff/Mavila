@@ -3,26 +3,22 @@
 	"id": "mavila_placer",
 	"version": "${version}",
 	"name": "Placer",
-	"description": "Adds a Redstone block capable of placing blocks in a balanced way, including unique interactions.",
+	"description": "Adds a Redstone block capable of placing blocks in a balanced way.",
 	"authors": [
 		"Ginleaf"
 	],
-	"contact": {
-		"homepage": "https://modrinth.com/user/Ginleaff",
-		"sources": "https://github.com/Ginleaff/Mavila/mavila-placer"
-	},
 	"license": "MIT",
 	"icon": "assets/mavila_placer/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"mod.ginleaf.placer.Placer"
+			"mod.ginleaf.placer.MavilaPlacer"
 		],
 		"client": [
-			"mod.ginleaf.placer.PlacerClient"
+			"mod.ginleaf.placer.MavilaPlacerClient"
 		],
 		"fabric-datagen": [
-			"mod.ginleaf.placer.PlacerDataGenerator"
+			"mod.ginleaf.placer.MavilaPlacerDataGenerator"
 		]
 	},
 	"depends": {
@@ -36,7 +32,7 @@
 			"parent": {
 				"id": "mavila",
 				"name": "Mavila",
-				"description": "Mavila: a collection of well-integrated mechanics and blocks."
+				"description": ""
 			}
 		}
 	}

@@ -5,7 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
-public class QuiverClient implements ClientModInitializer {
+public class MavilaQuiverClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
 

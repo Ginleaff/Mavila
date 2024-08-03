@@ -9,10 +9,10 @@ import mod.ginleaf.placer.screen.PlacerScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 
 @Environment(EnvType.CLIENT)
-public class PlacerClient implements ClientModInitializer {
+public class MavilaPlacerClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        HandledScreens.register(Placer.PLACER_SCREEN_HANDLER, PlacerScreen::new);
-        ParticleFactoryRegistry.getInstance().register(Placer.VENT_SMOKE, PlacerVentParticle.Factory::new);
+        HandledScreens.register(MavilaPlacer.PLACER_BLOCK_SCREEN_HANDLER, PlacerScreen::new);
+        ParticleFactoryRegistry.getInstance().register(MavilaPlacer.VENT_SMOKE, PlacerVentParticle.Factory::new);
     }
 }

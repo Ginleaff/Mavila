@@ -1,5 +1,5 @@
 package mod.ginleaf.placer.screen;
-import mod.ginleaf.placer.Placer;
+import mod.ginleaf.placer.MavilaPlacer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 
 public class PlacerScreen extends HandledScreen<PlacerScreenHandler> {
 
-    private static final Identifier TEXTURE = Identifier.of(Placer.MOD_ID, "textures/gui/container/placer.png");
+    private static final Identifier TEXTURE = Identifier.of(MavilaPlacer.MOD_ID, "textures/gui/container/placer.png");
 
     public PlacerScreen(PlacerScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);

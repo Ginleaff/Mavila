@@ -1,6 +1,6 @@
 package mod.ginleaf.placer.block.entity;
 
-import mod.ginleaf.placer.Placer;
+import mod.ginleaf.placer.MavilaPlacer;
 import mod.ginleaf.placer.screen.PlacerScreenHandler;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.DispenserBlockEntity;
@@ -24,7 +24,7 @@ public class PlacerBlockEntity extends DispenserBlockEntity {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
 
     public PlacerBlockEntity(BlockPos pos, BlockState state) {
-        super(Placer.PLACER_BLOCK_ENTITY_TYPE, pos, state);
+        super(MavilaPlacer.PLACER_BLOCK_ENTITY_TYPE, pos, state);
     }
 
     @Nullable

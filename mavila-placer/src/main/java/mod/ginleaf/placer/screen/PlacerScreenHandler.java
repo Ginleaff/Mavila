@@ -1,6 +1,6 @@
 package mod.ginleaf.placer.screen;
 
-import mod.ginleaf.placer.Placer;
+import mod.ginleaf.placer.MavilaPlacer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -19,7 +19,7 @@ public class PlacerScreenHandler extends ScreenHandler {
     }
 
     public PlacerScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-        super(Placer.PLACER_SCREEN_HANDLER, syncId);
+        super(MavilaPlacer.PLACER_BLOCK_SCREEN_HANDLER, syncId);
         checkSize(inventory, 3);
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);

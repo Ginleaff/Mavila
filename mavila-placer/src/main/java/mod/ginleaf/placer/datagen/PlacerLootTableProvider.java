@@ -1,6 +1,6 @@
 package mod.ginleaf.placer.datagen;
 
-import mod.ginleaf.placer.Placer;
+import mod.ginleaf.placer.MavilaPlacer;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.registry.RegistryWrapper;
@@ -14,6 +14,6 @@ public class PlacerLootTableProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        addDrop(Placer.PLACER);
+        addDrop(MavilaPlacer.PLACER_BLOCK);
     }
 }

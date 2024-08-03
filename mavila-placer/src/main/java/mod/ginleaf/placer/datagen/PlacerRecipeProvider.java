@@ -1,6 +1,6 @@
 package mod.ginleaf.placer.datagen;
 
-import mod.ginleaf.placer.Placer;
+import mod.ginleaf.placer.MavilaPlacer;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.server.recipe.RecipeExporter;
@@ -18,7 +18,7 @@ public class PlacerRecipeProvider extends FabricRecipeProvider {
 
     @Override
     public void generate(RecipeExporter exporter) {
-        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Placer.PLACER)
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, MavilaPlacer.PLACER_BLOCK)
                 .input('#', Items.COBBLESTONE)
                 .input('X', Items.PISTON)
                 .input('R', Items.REDSTONE)

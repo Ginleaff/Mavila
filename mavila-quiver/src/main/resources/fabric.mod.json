@@ -3,30 +3,26 @@
 	"id": "mavila_quiver",
 	"version": "${version}",
 	"name": "Quiver",
-	"description": "Adds a Quiver capable of storing and drawing arrows from as long as it's in your inventory.",
+	"description": "Adds a Quiver capable of storing projectiles and drawing projectiles from itself as long as it's in your inventory.",
 	"authors": [
 		"Ginleaf"
 	],
-	"contact": {
-		"homepage": "https://modrinth.com/user/Ginleaff",
-		"sources": "https://github.com/Ginleaff/Mavila/mavila-quiver"
-	},
 	"license": "MIT",
 	"icon": "assets/mavila_quiver/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"mod.ginleaf.quiver.Quiver"
+			"mod.ginleaf.quiver.MavilaQuiver"
 		],
 		"client": [
-			"mod.ginleaf.quiver.QuiverClient"
+			"mod.ginleaf.quiver.MavilaQuiverClient"
 		],
 		"fabric-datagen": [
-			"mod.ginleaf.quiver.QuiverDataGenerator"
+			"mod.ginleaf.quiver.MavilaQuiverDataGenerator"
 		]
 	},
 	"mixins": [
-		"quiver.mixins.json"
+		"mavila-quiver.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.11",

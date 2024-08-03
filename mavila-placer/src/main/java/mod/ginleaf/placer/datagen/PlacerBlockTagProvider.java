@@ -1,6 +1,6 @@
 package mod.ginleaf.placer.datagen;
 
-import mod.ginleaf.placer.Placer;
+import mod.ginleaf.placer.MavilaPlacer;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.registry.RegistryWrapper;
@@ -15,6 +15,6 @@ public class PlacerBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-        getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE).add(Placer.PLACER);
+        getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE).add(MavilaPlacer.PLACER_BLOCK);
     }
 }

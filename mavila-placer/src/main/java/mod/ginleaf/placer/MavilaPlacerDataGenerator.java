@@ -6,7 +6,7 @@ import mod.ginleaf.placer.datagen.PlacerBlockTagProvider;
 import mod.ginleaf.placer.datagen.PlacerLootTableProvider;
 import mod.ginleaf.placer.datagen.PlacerRecipeProvider;
 
-public class PlacerDataGenerator implements DataGeneratorEntrypoint {
+public class MavilaPlacerDataGenerator implements DataGeneratorEntrypoint {
 	@Override
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
 		FabricDataGenerator.Pack placerPack = fabricDataGenerator.createPack();

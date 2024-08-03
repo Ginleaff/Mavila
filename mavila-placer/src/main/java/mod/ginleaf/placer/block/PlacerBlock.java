@@ -1,6 +1,6 @@
 package mod.ginleaf.placer.block;
 import com.mojang.serialization.MapCodec;
-import mod.ginleaf.placer.Placer;
+import mod.ginleaf.placer.MavilaPlacer;
 import mod.ginleaf.placer.block.entity.PlacerBlockEntity;
 import mod.ginleaf.placer.block.behavior.PlacerPlacementBehavior;
 import net.minecraft.block.*;
@@ -57,7 +57,7 @@ public class PlacerBlock extends DispenserBlock {
         if (screenHandlerFactory != null) {
             player.openHandledScreen(screenHandlerFactory);
         }
-        player.incrementStat(Placer.INSPECT_PLACER);
+        player.incrementStat(MavilaPlacer.INSPECT_PLACER_BLOCK);
         return ActionResult.SUCCESS;
     }
 
@@ -65,7 +65,7 @@ public class PlacerBlock extends DispenserBlock {
     protected void dispense(ServerWorld world, BlockState state, BlockPos pos) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if(!(blockEntity instanceof PlacerBlockEntity placerBlockEntity)) {
-            Placer.LOGGER.warn("Ignoring placing attempt for Placer without matching block entity at {}", pos);
+            MavilaPlacer.LOGGER.warn("Ignoring placing attempt for Placer without matching block entity at {}", pos);
             return;
         }
         int i = placerBlockEntity.chooseNonEmptySlot(world.random);

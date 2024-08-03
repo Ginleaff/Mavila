@@ -1,6 +1,6 @@
 package mod.ginleaf.placer.block.behavior;
 
-import mod.ginleaf.placer.Placer;
+import mod.ginleaf.placer.MavilaPlacer;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -72,7 +72,7 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
             double o = (double)i * g + random.nextGaussian() * 0.01;
             double p = (double)j * g + random.nextGaussian() * 0.01;
             double q = (double)k * g + random.nextGaussian() * 0.01;
-            pointer.world().spawnParticles(Placer.VENT_SMOKE, h, m, n,1,o,p,q,0.055);
+            pointer.world().spawnParticles(MavilaPlacer.VENT_SMOKE, h, m, n,1,o,p,q,0.055);
         }
     }
 
