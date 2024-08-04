@@ -129,14 +129,13 @@ public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, in
             return this;
         }
 
-        private int addInternal(ItemStack stack) {
+        private int getStackMatchIndex(ItemStack stack) {
             if (stack.isStackable()) {
                 for (int i = 0; i < this.stacks.size(); ++i) {
                     if (ItemStack.areItemsAndComponentsEqual(this.stacks.get(i), stack) && this.stacks.get(i).getCount() < 64) {
                         return i;
                     }
                 }
-
             }
             return -1;
         }
@@ -150,16 +149,25 @@ public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, in
             if (stack.isEmpty() || !stack.getItem().canBeNested()) return 0;
             int i = Math.min(stack.getCount(), this.getMaxAllowed(stack, this.maxCount));
             if (i == 0) return 0;
-            this.capacity += AdjustableBundleComponent.getStackCapacity(stack, this.maxCount) * i;
-            int j = this.addInternal(stack);
+            int j = this.getStackMatchIndex(stack);
             if(j != -1) {
-                ItemStack itemStack = this.stacks.remove(j);
-                ItemStack itemStack2 = itemStack.copyWithCount(itemStack.getCount() + i);
+                if(i + this.stacks.get(j).getCount() > Item.DEFAULT_MAX_COUNT) { //65+ ItemStack fix
+                    ItemStack stackRemoved = this.stacks.remove(j);
+                    int k = i + stackRemoved.getCount() - Item.DEFAULT_MAX_COUNT;
+                    this.stacks.add(j,stackRemoved.copyWithCount(Item.DEFAULT_MAX_COUNT));
+                    stack.decrement(k);
+                    this.capacity += k;
+                    return add(stack);
+                }
+                this.capacity += AdjustableBundleComponent.getStackCapacity(stack, this.maxCount) * i;
+                ItemStack stackRemoved = this.stacks.remove(j);
+                ItemStack stacksCombined = stackRemoved.copyWithCount(stackRemoved.getCount() + i );
                 stack.decrement(i);
-                this.stacks.addFirst(itemStack2);
-                return i;
+                this.stacks.add(j,stacksCombined);
+            } else {
+                this.capacity += AdjustableBundleComponent.getStackCapacity(stack, this.maxCount) * i;
+                this.stacks.addLast(stack.split(i));
             }
-            this.stacks.addFirst(stack.split(i));
             return i;
         }
 
@@ -175,10 +183,6 @@ public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, in
             ItemStack itemStack = (this.stacks.removeFirst()).copy();
             this.capacity -= AdjustableBundleComponent.getStackCapacity(itemStack, this.maxCount) * itemStack.getCount();
             return itemStack;
-        }
-
-        public int getCapacity() {
-            return this.capacity;
         }
 
         public AdjustableBundleComponent build() {

@@ -20,24 +20,24 @@ import net.minecraft.util.ClickType;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Optional;
 
-public class QuiverItem extends BundleItem {
+public class QuiverItem extends Item {
     public static final AdjustableBundleComponent QUIVER_DEFAULT = new AdjustableBundleComponent(List.of(), 256);
 
-    public QuiverItem(Item.Settings settings) {
+    public QuiverItem(Settings settings) {
         super(settings);
     }
 
-    public static int getQuiverCapacity(ItemStack stack) {
+    public static double getQuiverCapacity(ItemStack stack) {
         AdjustableBundleComponent quiverContents = stack.getOrDefault(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS, QUIVER_DEFAULT);
         return quiverContents.getCapacity();
     }
 
-    @Override
     public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
         if (!(clickType == ClickType.RIGHT && slot.canTakePartial(player) && isQuiverInteractable(otherStack))) return false;
         AdjustableBundleComponent quiverContents = stack.get(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS);
@@ -60,7 +60,6 @@ public class QuiverItem extends BundleItem {
         return true;
     }
 
-    @Override
     public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
         if (clickType != ClickType.RIGHT) return false;
         AdjustableBundleComponent quiverContents = stack.get(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS);
@@ -84,7 +83,6 @@ public class QuiverItem extends BundleItem {
         return true;
     }
 
-    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         if (dropAllBundledItems(itemStack, user)) {
@@ -96,14 +94,16 @@ public class QuiverItem extends BundleItem {
         }
     }
 
-    @Override
     public boolean isItemBarVisible(ItemStack stack) {
         return getQuiverCapacity(stack) > 0;
     }
 
-    @Override
     public int getItemBarStep(ItemStack stack) {
-        return Math.min(1 + ((getQuiverCapacity(stack)/256) * 12), 13);
+        return (int) Math.min(getQuiverCapacity(stack)/256 * 12 + 1, 13);
+    }
+
+    public int getItemBarColor(ItemStack stack) {
+        return MathHelper.packRgb(0.4F, 0.4F, 1.0F);
     }
 
     private static boolean dropAllBundledItems(ItemStack stack, PlayerEntity player) {
@@ -116,13 +116,11 @@ public class QuiverItem extends BundleItem {
         return true;
     }
 
-    @Override
     public Optional<TooltipData> getTooltipData(ItemStack stack) {
         return !stack.contains(DataComponentTypes.HIDE_TOOLTIP) && !stack.contains(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)
                 ? Optional.ofNullable(stack.get(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS)).map(QuiverTooltipData::new) : Optional.empty();
     }
 
-    @Override
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
         AdjustableBundleComponent quiverContents = stack.get(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS);
         if (quiverContents != null) {

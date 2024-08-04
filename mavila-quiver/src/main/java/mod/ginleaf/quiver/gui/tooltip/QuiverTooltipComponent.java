@@ -41,7 +41,7 @@ public class QuiverTooltipComponent implements TooltipComponent {
         int i = this.getColumns();
         int j = this.getRows();
         context.drawGuiTexture(BACKGROUND_TEXTURE, x, y, this.getColumnsWidth(), this.getRowsHeight());
-        boolean bl = this.quiverContents.getCapacity() >= 1;
+        boolean bl = this.quiverContents.getCapacity() > 0;
         int k = 0;
 
         for(int l = 0; l < j; ++l) {
@@ -73,11 +73,11 @@ public class QuiverTooltipComponent implements TooltipComponent {
     }
 
     private int getColumns() {
-        return Math.max(2, (int)Math.ceil(Math.sqrt((double)this.quiverContents.size() + 1.0)));
+        return Math.max(2, (int) Math.ceil(Math.sqrt((double) this.quiverContents.size() + 1.0)));
     }
 
     private int getRows() {
-        return (int)Math.ceil(((double)this.quiverContents.size() + 1.0) / (double)this.getColumns());
+        return (int) Math.ceil(((double) this.quiverContents.size() + 1.0) / (double) this.getColumns());
     }
 
     @Environment(EnvType.CLIENT)
