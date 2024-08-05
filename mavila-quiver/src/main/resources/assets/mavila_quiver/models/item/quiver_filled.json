@@ -1,0 +1,6 @@
+{
+  "parent": "mavila_quiver:item/quiver",
+  "textures": {
+    "layer0": "mavila_quiver:item/quiver_filled"
+  }
+}

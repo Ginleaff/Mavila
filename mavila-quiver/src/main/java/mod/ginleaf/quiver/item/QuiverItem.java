@@ -14,7 +14,6 @@ import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.ClickType;
 import net.minecraft.util.Formatting;
@@ -29,7 +28,7 @@ import java.util.Optional;
 public class QuiverItem extends Item {
     public static final AdjustableBundleComponent QUIVER_DEFAULT = new AdjustableBundleComponent(List.of(), 256);
 
-    public QuiverItem(Settings settings) {
+    public QuiverItem(Item.Settings settings) {
         super(settings);
     }
 
@@ -46,12 +45,11 @@ public class QuiverItem extends Item {
         if (otherStack.isEmpty()) {
             ItemStack itemStack = builder.removeFirst();
             if (itemStack != null) {
-
                 this.playRemoveOneSound(player);
                 cursorStackReference.set(itemStack);
             }
         } else {
-            int i = builder.add(otherStack);
+            int i = builder.addLast(otherStack);
             if (i > 0) {
                 this.playInsertSound(player);
             }
@@ -71,10 +69,10 @@ public class QuiverItem extends Item {
             ItemStack itemStack2 = builder.removeFirst();
             if (itemStack2 != null) {
                 ItemStack itemStack3 = slot.insertStack(itemStack2);
-                builder.add(itemStack3);
+                builder.addLast(itemStack3);
             }
         } else if (itemStack.getItem().canBeNested() && isQuiverInteractable(itemStack)) {
-            int i = builder.add(slot, player);
+            int i = builder.addLast(slot, player);
             if (i > 0) {
                 this.playInsertSound(player);
             }
@@ -87,7 +85,6 @@ public class QuiverItem extends Item {
         ItemStack itemStack = user.getStackInHand(hand);
         if (dropAllBundledItems(itemStack, user)) {
             this.playDropContentsSound(user);
-            user.incrementStat(Stats.USED.getOrCreateStat(this));
             return TypedActionResult.success(itemStack, world.isClient());
         } else {
             return TypedActionResult.fail(itemStack);
@@ -137,8 +134,18 @@ public class QuiverItem extends Item {
         }
     }
 
+    public static ItemStack getQuiverAmmo(ItemStack quiverItemStack) {
+        AdjustableBundleComponent quiverContents = quiverItemStack.getOrDefault(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS, QuiverItem.QUIVER_DEFAULT);
+        if(quiverContents.isEmpty()) return ItemStack.EMPTY;
+        AdjustableBundleComponent.Builder builder = new AdjustableBundleComponent.Builder(quiverContents);
+        ItemStack returnStack = quiverContents.get(0).copyWithCount(1);
+        builder.decrementFirst(1);
+        quiverItemStack.set(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS, builder.build());
+        return returnStack;
+    }
+
     private boolean isQuiverInteractable(ItemStack itemStack) {
-        return itemStack.isEmpty() || itemStack.getItem() instanceof ProjectileItem;
+        return itemStack.isEmpty() || itemStack.getItem() instanceof ArrowItem;
     }
 
     private void playInsertSound(Entity entity) {

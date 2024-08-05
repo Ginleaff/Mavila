@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(targets = "net.minecraft.client.gui.tooltip.TooltipComponent")
+@Mixin(TooltipComponent.class)
 public interface TooltipComponentMixin {
     @Inject(at = @At("HEAD"), method = "of(Lnet/minecraft/item/tooltip/TooltipData;)Lnet/minecraft/client/gui/tooltip/TooltipComponent;", cancellable = true)
     private static void of(TooltipData data, CallbackInfoReturnable<TooltipComponent> cir) {

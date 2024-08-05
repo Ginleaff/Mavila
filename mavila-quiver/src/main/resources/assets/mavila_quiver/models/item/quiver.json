@@ -1,0 +1,9 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "mavila_quiver:item/quiver"
+  },
+  "overrides": [
+    { "predicate": { "filled": 0.5 }, "model": "mavila_quiver:item/quiver_filled" }
+  ]
+}

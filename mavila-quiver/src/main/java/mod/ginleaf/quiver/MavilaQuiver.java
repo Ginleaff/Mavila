@@ -17,8 +17,8 @@ public class MavilaQuiver implements ModInitializer {
 
 	public static final String MOD_ID = "mavila_quiver";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-
 	private static final Identifier QUIVER_ITEM_ID = Identifier.of(MOD_ID, "quiver");
+	public static final Identifier INSPECT_QUIVER_ITEM = Identifier.of(MOD_ID, "inspect_quiver");
 	public static final ComponentType<AdjustableBundleComponent> ADJUSTABLE_BUNDLE_CONTENTS = ComponentType.<AdjustableBundleComponent>builder()
 			.codec(AdjustableBundleComponent.CODEC).packetCodec(AdjustableBundleComponent.PACKET_CODEC).build();
 	public static final QuiverItem QUIVER = new QuiverItem(new Item.Settings()
@@ -28,6 +28,7 @@ public class MavilaQuiver implements ModInitializer {
 	public void onInitialize() {
 		Registry.register(Registries.ITEM, QUIVER_ITEM_ID, QUIVER);
 		Registry.register(Registries.DATA_COMPONENT_TYPE, QUIVER_ITEM_ID, ADJUSTABLE_BUNDLE_CONTENTS);
+		Registry.register(Registries.CUSTOM_STAT, INSPECT_QUIVER_ITEM.getPath(), INSPECT_QUIVER_ITEM);
 		LOGGER.info(MOD_ID + " | Loaded Successfully");
 	}
 }

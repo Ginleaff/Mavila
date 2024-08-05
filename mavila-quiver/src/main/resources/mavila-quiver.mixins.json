@@ -3,8 +3,13 @@
   "minVersion": "0.8",
   "package": "mod.ginleaf.quiver.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
-  "client": ["TooltipComponentMixin"],
+  "mixins": [
+    "PlayerEntityMixin",
+    "RangedWeaponItemMixin"
+  ],
+  "client": [
+    "TooltipComponentMixin"
+  ],
   "server": [],
   "injectors": {
     "defaultRequire": 1

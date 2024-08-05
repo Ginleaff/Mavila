@@ -145,7 +145,7 @@ public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, in
             return Math.max(base - AdjustableBundleComponent.getStackCapacity(stack, this.maxCount), 0);
         }
 
-        public int add(ItemStack stack) {
+        public int addLast(ItemStack stack) {
             if (stack.isEmpty() || !stack.getItem().canBeNested()) return 0;
             int i = Math.min(stack.getCount(), this.getMaxAllowed(stack, this.maxCount));
             if (i == 0) return 0;
@@ -153,11 +153,11 @@ public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, in
             if(j != -1) {
                 if(i + this.stacks.get(j).getCount() > Item.DEFAULT_MAX_COUNT) { //65+ ItemStack fix
                     ItemStack stackRemoved = this.stacks.remove(j);
-                    int k = i + stackRemoved.getCount() - Item.DEFAULT_MAX_COUNT;
+                    int k = Item.DEFAULT_MAX_COUNT - ((i + stackRemoved.getCount()) % Item.DEFAULT_MAX_COUNT);
                     this.stacks.add(j,stackRemoved.copyWithCount(Item.DEFAULT_MAX_COUNT));
                     stack.decrement(k);
                     this.capacity += k;
-                    return add(stack);
+                    return addLast(stack);
                 }
                 this.capacity += AdjustableBundleComponent.getStackCapacity(stack, this.maxCount) * i;
                 ItemStack stackRemoved = this.stacks.remove(j);
@@ -171,10 +171,21 @@ public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, in
             return i;
         }
 
-        public int add(Slot slot, PlayerEntity player) {
+        public int addLast(Slot slot, PlayerEntity player) {
             ItemStack itemStack = slot.getStack();
             int i = this.getMaxAllowed(itemStack, this.maxCount);
-            return this.add(slot.takeStackRange(itemStack.getCount(), i, player));
+            return this.addLast(slot.takeStackRange(itemStack.getCount(), i, player));
+        }
+
+        public void decrementFirst(int amount) {
+            if (this.stacks.isEmpty()) return;
+            int count = this.stacks.getFirst().getCount();
+            if(count - amount < 1) {
+                this.stacks.removeFirst();
+            } else {
+                this.stacks.getFirst().setCount(count-amount);
+            }
+            this.capacity -= amount;
         }
 
         @Nullable
@@ -183,6 +194,10 @@ public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, in
             ItemStack itemStack = (this.stacks.removeFirst()).copy();
             this.capacity -= AdjustableBundleComponent.getStackCapacity(itemStack, this.maxCount) * itemStack.getCount();
             return itemStack;
+        }
+
+        public int getCapacity() {
+            return this.capacity;
         }
 
         public AdjustableBundleComponent build() {

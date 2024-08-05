@@ -1,4 +1,5 @@
 {
   "item.mavila_quiver.quiver": "Quiver",
-  "item.mavila_quiver.quiver.fullness": "%s/%s"
+  "item.mavila_quiver.quiver.fullness": "%s/%s",
+  "stat.mavila_quiver.inspect_quiver": "Arrows Shot from Quiver"
 }
