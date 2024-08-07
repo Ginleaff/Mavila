@@ -1,0 +1,8 @@
+gradle.buildFinished {
+    project.buildDir.deleteDir()
+}
+runClient.enabled = false
+
+fabricApi {
+    configureDataGeneration()
+}

@@ -52,6 +52,7 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
         return stack;
     }
 
+    //I hate particles.
     @Override
     protected void spawnParticles(BlockPointer pointer, Direction side) {
         if (!this.isSuccess()) return;

@@ -20,6 +20,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -134,12 +135,14 @@ public class QuiverItem extends Item {
         }
     }
 
-    public static ItemStack getQuiverAmmo(ItemStack quiverItemStack) {
+    public static ItemStack getQuiverArrow(ItemStack quiverItemStack, Random random) {
         AdjustableBundleComponent quiverContents = quiverItemStack.getOrDefault(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS, QuiverItem.QUIVER_DEFAULT);
         if(quiverContents.isEmpty()) return ItemStack.EMPTY;
         AdjustableBundleComponent.Builder builder = new AdjustableBundleComponent.Builder(quiverContents);
-        ItemStack returnStack = quiverContents.get(0).copyWithCount(1);
-        builder.decrementFirst(1);
+        int setRand = random.nextBetween(0, quiverContents.size()-1);
+        MavilaQuiver.LOGGER.info("Random is: {}", setRand);
+        ItemStack returnStack = quiverContents.get(setRand).copyWithCount(1);
+        builder.decrement(setRand,1);
         quiverItemStack.set(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS, builder.build());
         return returnStack;
     }

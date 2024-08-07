@@ -12,3 +12,4 @@ rootProject.name = archives_base_name
 
 include 'mavila-quiver'
 include 'mavila-placer'
+include 'mavila-railings'

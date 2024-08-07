@@ -22,7 +22,7 @@ public abstract class RangedWeaponItemMixin extends Item {
     @Inject(method = "getProjectile", at = @At("HEAD"), cancellable = true)
     private static void getProjectileInject(ItemStack stack, ItemStack projectileStack, LivingEntity shooter, boolean multishot, CallbackInfoReturnable<ItemStack> cir) {
         if(projectileStack.getItem() instanceof QuiverItem) {
-            ItemStack itemStack = QuiverItem.getQuiverAmmo(projectileStack);
+            ItemStack itemStack = QuiverItem.getQuiverArrow(projectileStack,shooter.getRandom());
             if (!itemStack.isEmpty()) {
                 if(shooter.isPlayer()) {
                     Objects.requireNonNull(shooter.getWorld().getPlayerByUuid(shooter.getUuid())).incrementStat(MavilaQuiver.INSPECT_QUIVER_ITEM);

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "mavila_railings",
+  "version": "${version}",
+  "name": "Railings",
+  "description": "Adds Dyeable Railings with unique placement mechanics.",
+  "authors": [
+    "Ginleaf"
+  ],
+  "license": "MIT",
+  "icon": "assets/mavila_railings/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "mod.ginleaf.railings.MavilaRailings"
+    ],
+    "client": [
+      "mod.ginleaf.railings.MavilaRailingsClient"
+    ],
+    "fabric-datagen": [
+      "mod.ginleaf.railings.MavilaRailingsDataGenerator"
+    ]
+  },
+  "mixins": [
+    "mavila-railings.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": "~1.21",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "parent": {
+        "id": "mavila",
+        "name": "Mavila",
+        "description": "Mavila: a collection of well-integrated mechanics and blocks."
+      }
+    }
+  }
+}

@@ -177,13 +177,13 @@ public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, in
             return this.addLast(slot.takeStackRange(itemStack.getCount(), i, player));
         }
 
-        public void decrementFirst(int amount) {
+        public void decrement(int index, int amount) {
             if (this.stacks.isEmpty()) return;
-            int count = this.stacks.getFirst().getCount();
+            int count = this.stacks.get(index).getCount();
             if(count - amount < 1) {
-                this.stacks.removeFirst();
+                this.stacks.remove(index);
             } else {
-                this.stacks.getFirst().setCount(count-amount);
+                this.stacks.get(index).setCount(count-amount);
             }
             this.capacity -= amount;
         }
