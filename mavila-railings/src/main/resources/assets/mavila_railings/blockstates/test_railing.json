@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "north=true": {
+      "model": "mavila_railings:block/test_railing_north"
+    },
+    "west=true": {
+      "model": "mavila_railings:block/test_railing_west"
+    },
+    "south=true": {
+      "model": "mavila_railings:block/test_railing_south"
+    },
+    "east=true": {
+      "model": "mavila_railings:block/test_railing_east"
+    }
+  }
+}
