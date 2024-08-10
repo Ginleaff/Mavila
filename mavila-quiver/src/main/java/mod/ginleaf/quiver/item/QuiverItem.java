@@ -51,6 +51,7 @@ public class QuiverItem extends Item {
             }
         } else {
             int i = builder.addLast(otherStack);
+            MavilaQuiver.LOGGER.info(Integer.toString(builder.getCapacity()));
             if (i > 0) {
                 this.playInsertSound(player);
             }
@@ -74,6 +75,7 @@ public class QuiverItem extends Item {
             }
         } else if (itemStack.getItem().canBeNested() && isQuiverInteractable(itemStack)) {
             int i = builder.addLast(slot, player);
+            MavilaQuiver.LOGGER.info(Integer.toString(builder.getCapacity()));
             if (i > 0) {
                 this.playInsertSound(player);
             }
@@ -140,11 +142,10 @@ public class QuiverItem extends Item {
         if(quiverContents.isEmpty()) return ItemStack.EMPTY;
         AdjustableBundleComponent.Builder builder = new AdjustableBundleComponent.Builder(quiverContents);
         int setRand = random.nextBetween(0, quiverContents.size()-1);
-        MavilaQuiver.LOGGER.info("Random is: {}", setRand);
-        ItemStack returnStack = quiverContents.get(setRand).copyWithCount(1);
+        ItemStack arrowStack = quiverContents.get(setRand).copyWithCount(1);
         builder.decrement(setRand,1);
         quiverItemStack.set(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS, builder.build());
-        return returnStack;
+        return arrowStack;
     }
 
     private boolean isQuiverInteractable(ItemStack itemStack) {

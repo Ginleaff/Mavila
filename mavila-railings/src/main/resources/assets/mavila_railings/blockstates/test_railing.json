@@ -1,16 +1,59 @@
 {
   "variants": {
-    "north=true": {
-      "model": "mavila_railings:block/test_railing_north"
+    "north=true,east=false,south=false,west=false": {
+      "model": "mavila_railings:block/test_railing_1"
     },
-    "west=true": {
-      "model": "mavila_railings:block/test_railing_west"
+    "north=false,east=true,south=false,west=false": {
+      "model": "mavila_railings:block/test_railing_1",
+      "y": 90
     },
-    "south=true": {
-      "model": "mavila_railings:block/test_railing_south"
+    "north=false,east=false,south=true,west=false": {
+      "model": "mavila_railings:block/test_railing_1",
+      "y": 180
     },
-    "east=true": {
-      "model": "mavila_railings:block/test_railing_east"
+    "north=false,east=false,south=false,west=true": {
+      "model": "mavila_railings:block/test_railing_1",
+      "y": 270
+    },
+    "north=true,east=true,south=false,west=false": {
+      "model": "mavila_railings:block/test_railing_2"
+    },
+    "north=false,east=true,south=true,west=false": {
+      "model": "mavila_railings:block/test_railing_2",
+      "y": 90
+    },
+    "north=false,east=false,south=true,west=true": {
+      "model": "mavila_railings:block/test_railing_2",
+      "y": 180
+    },
+    "north=true,east=false,south=false,west=true": {
+      "model": "mavila_railings:block/test_railing_2",
+      "y": 270
+    },
+    "north=true,east=false,south=true,west=false": {
+      "model": "mavila_railings:block/test_railing_parallel"
+    },
+    "north=false,east=true,south=false,west=true": {
+      "model": "mavila_railings:block/test_railing_parallel",
+      "y": 90
+    },
+    "north=true,east=true,south=true,west=false": {
+      "model": "mavila_railings:block/test_railing_3"
+    },
+    "north=false,east=true,south=true,west=true": {
+      "model": "mavila_railings:block/test_railing_3",
+      "y": 90
+    },
+    "north=true,east=false,south=true,west=true": {
+      "model": "mavila_railings:block/test_railing_3",
+      "y": 180
+    },
+    "north=true,east=true,south=false,west=true": {
+      "model": "mavila_railings:block/test_railing_3",
+      "y": 270
+    },
+    "north=true,east=true,south=true,west=true": {
+      "model": "mavila_railings:block/test_railing_4"
     }
   }
 }
