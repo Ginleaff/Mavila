@@ -1,0 +1,6 @@
+{
+  "parent": "mavila_railings:block/railing_1",
+  "textures": {
+    "face": "mavila_railings:block/light_blue_railing"
+  }
+}

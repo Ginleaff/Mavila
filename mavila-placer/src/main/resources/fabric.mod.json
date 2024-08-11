@@ -31,8 +31,7 @@
 		"modmenu": {
 			"parent": {
 				"id": "mavila",
-				"name": "Mavila",
-				"description": ""
+				"name": "Mavila"
 			}
 		}
 	}

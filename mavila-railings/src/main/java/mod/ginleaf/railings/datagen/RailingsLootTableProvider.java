@@ -1,7 +1,7 @@
 package mod.ginleaf.railings.datagen;
 
 import mod.ginleaf.railings.MavilaRailings;
-import mod.ginleaf.railings.block.HorizontalBorderBlock;
+import mod.ginleaf.railings.block.RailingBlock;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.block.Block;
@@ -25,7 +25,7 @@ public class RailingsLootTableProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        addDrop(MavilaRailings.TEST_BLOCK, flowerbedToRailingsDrops(MavilaRailings.TEST_BLOCK, MavilaRailings.TEST_ITEM));
+        addDrop(MavilaRailings.WHITE_RAILING_BLOCK, flowerbedToRailingsDrops(MavilaRailings.WHITE_RAILING_BLOCK, MavilaRailings.WHITE_RAILING_ITEM));
     }
 
     public LootTable.Builder flowerbedToRailingsDrops(Block drop, Item item) {
@@ -35,6 +35,6 @@ public class RailingsLootTableProvider extends FabricBlockLootTableProvider {
                                 SetCountLootFunction.builder(ConstantLootNumberProvider.create((float) amount))
                                         .conditionally(BlockStatePropertyLootCondition.builder(drop)
                                                 .properties(StatePredicate.Builder.create()
-                                                        .exactMatch(HorizontalBorderBlock.RAILING_AMOUNT, amount)))))));
+                                                        .exactMatch(RailingBlock.RAILING_AMOUNT, amount)))))));
     }
 }

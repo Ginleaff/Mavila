@@ -1,3 +1,18 @@
 {
-  "block.mavila_railings.test_railing": "Test Railing"
+  "block.mavila_railings.white_railing": "White Railing",
+  "block.mavila_railings.orange_railing": "Orange Railing",
+  "block.mavila_railings.magenta_railing": "Magenta Railing",
+  "block.mavila_railings.light_blue_railing": "Light Blue Railing",
+  "block.mavila_railings.yellow_railing": "Yellow Railing",
+  "block.mavila_railings.lime_railing": "Lime Railing",
+  "block.mavila_railings.pink_railing": "Pink Railing",
+  "block.mavila_railings.gray_railing": "Gray Railing",
+  "block.mavila_railings.light_gray_railing": "Light Gray Railing",
+  "block.mavila_railings.cyan_railing": "Cyan Railing",
+  "block.mavila_railings.purple_railing": "Purple Railing",
+  "block.mavila_railings.blue_railing": "Blue Railing",
+  "block.mavila_railings.brown_railing": "Brown Railing",
+  "block.mavila_railings.green_railing": "Green Railing",
+  "block.mavila_railings.red_railing": "Red Railing",
+  "block.mavila_railings.black_railing": "Black Railing"
 }

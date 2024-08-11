@@ -21,9 +21,6 @@
       "mod.ginleaf.railings.MavilaRailingsDataGenerator"
     ]
   },
-  "mixins": [
-    "mavila-railings.mixins.json"
-  ],
   "depends": {
     "fabricloader": ">=0.15.11",
     "minecraft": "~1.21",
@@ -34,8 +31,7 @@
     "modmenu": {
       "parent": {
         "id": "mavila",
-        "name": "Mavila",
-        "description": "Mavila: a collection of well-integrated mechanics and blocks."
+        "name": "Mavila"
       }
     }
   }

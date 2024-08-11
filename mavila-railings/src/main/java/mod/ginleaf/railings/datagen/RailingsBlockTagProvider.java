@@ -15,6 +15,6 @@ public class RailingsBlockTagProvider extends FabricTagProvider.BlockTagProvider
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-        getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE).add(MavilaRailings.TEST_BLOCK);
+        getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE).add(MavilaRailings.WHITE_RAILING_BLOCK);
     }
 }

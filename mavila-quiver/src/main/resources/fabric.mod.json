@@ -34,8 +34,7 @@
 		"modmenu": {
 			"parent": {
 				"id": "mavila",
-				"name": "Mavila",
-				"description": "Mavila: a collection of well-integrated mechanics and blocks."
+				"name": "Mavila"
 			}
 		}
 	}
