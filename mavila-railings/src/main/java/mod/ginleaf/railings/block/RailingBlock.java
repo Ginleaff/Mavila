@@ -1,6 +1,5 @@
 package mod.ginleaf.railings.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,7 +40,6 @@ public class RailingBlock extends TransparentBlock implements Waterloggable {
             VoxelShapes.cuboid(0.9375, 0, -0.0625, 1.0625, 0.9375, 1.0625),
             VoxelShapes.cuboid(-0.0625, 0, 0.9375, 1.0625, 0.9375, 1.0625),
             VoxelShapes.cuboid(-0.0625, 0, -0.0625, 0.0625, 0.9375, 1.0625)
-
     };
 
     public static final BooleanProperty[] FACE_PROPERTIES = {NORTH, EAST, SOUTH, WEST};

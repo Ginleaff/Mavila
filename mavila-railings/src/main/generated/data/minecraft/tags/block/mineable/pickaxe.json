@@ -1,5 +1,20 @@
 {
   "values": [
-    "mavila_railings:test_railing"
+    "mavila_railings:white_railing",
+    "mavila_railings:orange_railing",
+    "mavila_railings:magenta_railing",
+    "mavila_railings:light_blue_railing",
+    "mavila_railings:yellow_railing",
+    "mavila_railings:lime_railing",
+    "mavila_railings:pink_railing",
+    "mavila_railings:gray_railing",
+    "mavila_railings:light_gray_railing",
+    "mavila_railings:cyan_railing",
+    "mavila_railings:purple_railing",
+    "mavila_railings:blue_railing",
+    "mavila_railings:brown_railing",
+    "mavila_railings:green_railing",
+    "mavila_railings:red_railing",
+    "mavila_railings:black_railing"
   ]
 }

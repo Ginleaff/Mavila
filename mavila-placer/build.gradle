@@ -2,7 +2,12 @@ gradle.buildFinished {
     project.buildDir.deleteDir()
 }
 runClient.enabled = false
+runServer.enabled = false
 
 fabricApi {
     configureDataGeneration()
+}
+
+dependencies {
+    implementation project(':mavila-railings')
 }

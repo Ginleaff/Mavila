@@ -1,6 +1,0 @@
-{
-  "parent": "mavila_railings:block/railing_parallel",
-  "textures": {
-    "face": "mavila_railings:block/magenta_railing"
-  }
-}

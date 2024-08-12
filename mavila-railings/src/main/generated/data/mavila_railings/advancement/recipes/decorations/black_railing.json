@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_black_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:black_dye"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_iron_bars": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:iron_bars"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_iron_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:iron_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "mavila_railings:black_railing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_iron_bars",
+      "has_iron_ingot",
+      "has_black_dye"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "mavila_railings:black_railing"
+    ]
+  }
+}

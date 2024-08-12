@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_bars"
+    },
+    "D": {
+      "item": "minecraft:lime_dye"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "IDI",
+    "###"
+  ],
+  "result": {
+    "count": 16,
+    "id": "mavila_railings:lime_railing"
+  }
+}

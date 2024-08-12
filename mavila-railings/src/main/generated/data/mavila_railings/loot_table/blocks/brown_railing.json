@@ -1,0 +1,76 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "mavila_railings:brown_railing",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "railing_amount": "1"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "mavila_railings:brown_railing",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "railing_amount": "2"
+                  }
+                }
+              ],
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "mavila_railings:brown_railing",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "railing_amount": "3"
+                  }
+                }
+              ],
+              "count": 3.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "mavila_railings:brown_railing",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "railing_amount": "4"
+                  }
+                }
+              ],
+              "count": 4.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "mavila_railings:brown_railing"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

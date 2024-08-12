@@ -11,7 +11,7 @@ public class PlacerVentParticle extends AscendingParticle {
         super(world,x,y,z,0.1f,0.1f,0.1f,dx,dy,dz,scale,sprite, 1.0f, 8, -0.035f, true);
         this.velocityMultiplier = 0.95f;
         float f;
-        this.red = f = 0.6f + world.random.nextFloat() / 3.0f;
+        this.red = f = 0.745f + world.random.nextFloat() / 4.0f;
         this.blue = f;
         this.green = f;
     }

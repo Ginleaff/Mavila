@@ -1,6 +1,7 @@
 package mod.ginleaf.placer.block.behavior;
 
 import mod.ginleaf.placer.MavilaPlacer;
+import mod.ginleaf.railings.block.RailingBlock;
 import net.minecraft.block.*;
 import net.minecraft.block.dispenser.FallibleItemDispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
@@ -27,8 +28,9 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
         BlockPos placePos = pointer.pos().offset(pointer.state().get(Properties.FACING));
         Item item = stack.getItem();
         this.setSuccess(false);
-        if (item instanceof BlockItem && isPlacerPlaceable((BlockItem) item)) {
-            placeBlock(pointer,stack,placePos);
+        if (item instanceof BlockItem blockItem && isPlacerPlaceable(blockItem)) {
+            boolean flip = shouldFaceAway(blockItem);
+            placeBlock(pointer,stack,placePos,flip);
             return stack;
         }
         if (item instanceof BoatItem) {
@@ -52,7 +54,6 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
         return stack;
     }
 
-    //I hate particles.
     @Override
     protected void spawnParticles(BlockPointer pointer, Direction side) {
         if (!this.isSuccess()) return;
@@ -82,12 +83,6 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
         if (
                itemBlock.equals(Blocks.PISTON)
             || itemBlock.equals(Blocks.STICKY_PISTON)
-            || itemBlock.equals(Blocks.BELL)
-            || itemBlock.equals(Blocks.COMPARATOR)
-            || itemBlock instanceof BannerBlock
-            || itemBlock instanceof SignBlock
-            || itemBlock instanceof SkullBlock
-            || itemBlock instanceof BedBlock
         ) return true;
 
         if (itemBlock.getHardness() == -1.0f) return false;
@@ -97,16 +92,22 @@ public class PlacerPlacementBehavior extends FallibleItemDispenserBehavior {
             || itemBlock.equals(Blocks.REINFORCED_DEEPSLATE)
             || itemBlock.equals(Blocks.CRYING_OBSIDIAN)
             || itemBlock.equals(Blocks.RESPAWN_ANCHOR)
+            || itemBlock.equals(Blocks.ENDER_CHEST)
         ) return false;
 
-        if (itemBlock.getStateManager().getDefaultState().getPistonBehavior().equals(PistonBehavior.BLOCK))
-            return false;
-
-        return !itemBlock.getStateManager().getDefaultState().hasBlockEntity();
+        return !itemBlock.getStateManager().getDefaultState().getPistonBehavior().equals(PistonBehavior.BLOCK);
     }
 
-    private void placeBlock(BlockPointer pointer, ItemStack stack, BlockPos placePos) {
+    private boolean shouldFaceAway(BlockItem item) {
+        Block itemBlock = item.getBlock();
+        return itemBlock instanceof RailingBlock
+            || itemBlock instanceof StairsBlock
+            || itemBlock instanceof AbstractChestBlock<?>;
+    }
+
+    private void placeBlock(BlockPointer pointer, ItemStack stack, BlockPos placePos, boolean shouldFlip) {
         Direction direction = pointer.state().get(Properties.FACING);
+        if(shouldFlip) direction = direction.getOpposite();
         ServerWorld world = pointer.world();
         Item item = stack.getItem();
         Direction blockFacingDirection = world.isAir(placePos.down()) || !world.getFluidState(placePos.down()).isEmpty() ? direction : Direction.UP;

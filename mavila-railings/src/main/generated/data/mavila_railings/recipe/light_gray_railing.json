@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_bars"
+    },
+    "D": {
+      "item": "minecraft:light_gray_dye"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "IDI",
+    "###"
+  ],
+  "result": {
+    "count": 16,
+    "id": "mavila_railings:light_gray_railing"
+  }
+}
