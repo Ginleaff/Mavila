@@ -3,7 +3,7 @@
   "id": "mavila_railings",
   "version": "${version}",
   "name": "Railings",
-  "description": "Adds Dyeable Railings with unique placement mechanics.",
+  "description": "Adds Dyeable railings with unique placement mechanics.",
   "authors": [
     "Ginleaf"
   ],

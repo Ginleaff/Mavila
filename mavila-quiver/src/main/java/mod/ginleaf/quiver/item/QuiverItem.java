@@ -4,8 +4,11 @@ import mod.ginleaf.quiver.MavilaQuiver;
 import mod.ginleaf.quiver.component.AdjustableBundleComponent;
 import mod.ginleaf.quiver.item.tooltip.QuiverTooltipData;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.EnchantmentEffectComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.*;
@@ -15,21 +18,21 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.ClickType;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class QuiverItem extends Item {
     public static final AdjustableBundleComponent QUIVER_DEFAULT = new AdjustableBundleComponent(List.of(), 256);
 
-    public QuiverItem(Item.Settings settings) {
+    public QuiverItem(Settings settings) {
         super(settings);
     }
 
@@ -50,8 +53,7 @@ public class QuiverItem extends Item {
                 cursorStackReference.set(itemStack);
             }
         } else {
-            int i = builder.addLast(otherStack);
-            MavilaQuiver.LOGGER.info(Integer.toString(builder.getCapacity()));
+            int i = builder.add(otherStack);
             if (i > 0) {
                 this.playInsertSound(player);
             }
@@ -68,14 +70,13 @@ public class QuiverItem extends Item {
         AdjustableBundleComponent.Builder builder = new AdjustableBundleComponent.Builder(quiverContents);
         if (itemStack.isEmpty()) {
             this.playRemoveOneSound(player);
-            ItemStack itemStack2 = builder.removeFirst();
-            if (itemStack2 != null) {
-                ItemStack itemStack3 = slot.insertStack(itemStack2);
-                builder.addLast(itemStack3);
+            ItemStack removedStack = builder.removeFirst();
+            if (removedStack != null) {
+                removedStack = slot.insertStack(removedStack);
+                builder.add(removedStack);
             }
         } else if (itemStack.getItem().canBeNested() && isQuiverInteractable(itemStack)) {
-            int i = builder.addLast(slot, player);
-            MavilaQuiver.LOGGER.info(Integer.toString(builder.getCapacity()));
+            int i = builder.add(slot, player);
             if (i > 0) {
                 this.playInsertSound(player);
             }
@@ -86,6 +87,7 @@ public class QuiverItem extends Item {
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
+        if(hand.equals(Hand.OFF_HAND)) return TypedActionResult.fail(itemStack);
         if (dropAllBundledItems(itemStack, user)) {
             this.playDropContentsSound(user);
             return TypedActionResult.success(itemStack, world.isClient());
@@ -121,12 +123,11 @@ public class QuiverItem extends Item {
                 ? Optional.ofNullable(stack.get(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS)).map(QuiverTooltipData::new) : Optional.empty();
     }
 
-    public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         AdjustableBundleComponent quiverContents = stack.get(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS);
         if (quiverContents != null) {
             tooltip.add(Text.translatable("item.mavila_quiver.quiver.fullness", quiverContents.capacity(), 256).formatted(Formatting.GRAY));
         }
-
     }
 
     public void onItemEntityDestroyed(ItemEntity entity) {
@@ -137,19 +138,24 @@ public class QuiverItem extends Item {
         }
     }
 
-    public static ItemStack getQuiverArrow(ItemStack quiverItemStack, Random random) {
-        AdjustableBundleComponent quiverContents = quiverItemStack.getOrDefault(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS, QuiverItem.QUIVER_DEFAULT);
-        if(quiverContents.isEmpty()) return ItemStack.EMPTY;
+    public static ItemStack getArrow(ItemStack quiverStack, LivingEntity shooter, boolean isInfinity, boolean isCreative) {
+        AdjustableBundleComponent quiverContents = quiverStack.getOrDefault(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS, QuiverItem.QUIVER_DEFAULT);
         AdjustableBundleComponent.Builder builder = new AdjustableBundleComponent.Builder(quiverContents);
-        int setRand = random.nextBetween(0, quiverContents.size()-1);
-        ItemStack arrowStack = quiverContents.get(setRand).copyWithCount(1);
-        builder.decrement(setRand,1);
-        quiverItemStack.set(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS, builder.build());
+        Random random = new Random();
+        int index = random.nextInt(quiverContents.size());
+        ItemStack arrowStack = quiverContents.get(index).copyWithCount(1);
+        if(isInfinity && quiverContents.get(index).getItem().equals(Items.ARROW)) {
+            arrowStack.set(DataComponentTypes.INTANGIBLE_PROJECTILE, Unit.INSTANCE);
+        } else {
+            if(!isCreative) builder.decrementAt(index);
+        }
+        quiverStack.set(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS, builder.build());
+
         return arrowStack;
     }
 
     private boolean isQuiverInteractable(ItemStack itemStack) {
-        return itemStack.isEmpty() || itemStack.getItem() instanceof ArrowItem;
+        return itemStack.isEmpty() || itemStack.getItem() instanceof ArrowItem || itemStack.getItem() instanceof SnowballItem;
     }
 
     private void playInsertSound(Entity entity) {

@@ -17,9 +17,7 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.screen.slot.Slot;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, int maxCount) implements TooltipData {
@@ -33,13 +31,13 @@ public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, in
     private static int calculateCapacity(List<ItemStack> stacks, int maxCount) {
         int base = 0;
         ItemStack itemStack;
-        for(Iterator<ItemStack> stackIt = stacks.iterator(); stackIt.hasNext(); base += getStackCapacity(itemStack, maxCount) * itemStack.getCount()) {
+        for(Iterator<ItemStack> stackIt = stacks.iterator(); stackIt.hasNext(); base += getStackMultiplier(itemStack, maxCount) * itemStack.getCount()) {
             itemStack = stackIt.next();
         }
         return base;
     }
 
-    static int getStackCapacity(ItemStack stack, int maxCount) {
+    static int getStackMultiplier(ItemStack stack, int maxCount) {
         if(stack.getItem().getComponents().contains(DataComponentTypes.BUNDLE_CONTENTS)) {
             BundleContentsComponent basicBundleContents = stack.get(DataComponentTypes.BUNDLE_CONTENTS);
             if(basicBundleContents != null) {
@@ -87,7 +85,7 @@ public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, in
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AdjustableBundleComponent bundleComponent)) return false;
-        return this.capacity == bundleComponent.capacity && ItemStack.stacksEqual(this.stacks, bundleComponent.stacks);
+        return this.stacks.equals(bundleComponent.stacks);
     }
 
     public int hashCode() {
@@ -122,16 +120,10 @@ public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, in
             this.maxCount = base.maxCount;
         }
 
-        public AdjustableBundleComponent.Builder clear() {
-            this.stacks.clear();
-            this.capacity = 0;
-            return this;
-        }
-
-        private int getStackMatchIndex(ItemStack stack) {
+        private int getStackMatchIndex(ItemStack stack, int count) {
             if (stack.isStackable()) {
-                for (int i = 0; i < this.stacks.size(); ++i) {
-                    if (ItemStack.areItemsAndComponentsEqual(this.stacks.get(i), stack) && this.stacks.get(i).getCount() < stack.getMaxCount()) {
+                for (int i = count + 1; i < this.stacks.size(); ++i) {
+                    if (ItemStack.areItemsAndComponentsEqual(this.stacks.get(i), stack) && this.stacks.get(i).getCount() < 64) {
                         return i;
                     }
                 }
@@ -139,63 +131,60 @@ public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, in
             return -1;
         }
 
-        private int getMaxAllowed(ItemStack stack) {
-            int base = this.maxCount - this.capacity + 1;
-            return Math.max(base - AdjustableBundleComponent.getStackCapacity(stack, this.maxCount), 0);
+        private int getAvailableCapacity(ItemStack stack) {
+            int base = this.maxCount - this.capacity;
+            return Math.max(base / getStackMultiplier(stack, this.maxCount), 0);
         }
 
-        public int addLast(ItemStack stack) {
-            if (stack.isEmpty() || !stack.getItem().canBeNested()) return 0;
-            int i = Math.min(stack.getCount(), this.getMaxAllowed(stack));
-            if (i == 0) return 0;
-            int j = this.getStackMatchIndex(stack);
-            if(j != -1) {
-                if(i + this.stacks.get(j).getCount() > stack.getMaxCount()) {
-                    ItemStack stackAtPos = this.stacks.get(j);
-                    int k = (stackAtPos.getCount() + i) % stack.getMaxCount();
-                    this.stacks.get(j).setCount(stack.getMaxCount());
-                    stack.decrement(i - k);
-                    addLast(stack);
-                    this.capacity = calculateCapacity(this.stacks, this.maxCount);
-                    return i;
-                }
-                this.stacks.get(j).increment(getStackCapacity(stack, this.maxCount) * i);
-                stack.decrement(i);
-                this.capacity = calculateCapacity(this.stacks, this.maxCount);
-            } else {
-                this.capacity += getStackCapacity(stack, this.maxCount) * i;
-                this.stacks.addLast(stack.split(i));
-            }
-            return i;
-        }
-
-        public int addLast(Slot slot, PlayerEntity player) {
+        public int add(Slot slot, PlayerEntity player) {
             ItemStack itemStack = slot.getStack();
-            int i = this.getMaxAllowed(itemStack);
-            return this.addLast(slot.takeStackRange(itemStack.getCount(), i, player));
+            int i = this.getAvailableCapacity(itemStack);
+            return this.add(slot.takeStackRange(itemStack.getCount(), i, player));
         }
 
-        public void decrement(int index, int amount) {
+        public int add(ItemStack stack) {
+            if (stack.isEmpty() || !stack.getItem().canBeNested()) return 0;
+            final int ADD_ALLOWED = Math.min(stack.getCount(), this.getAvailableCapacity(stack));
+            if (ADD_ALLOWED == 0) return 0;
+            int remainingToAdd = ADD_ALLOWED;
+            this.capacity += remainingToAdd * getStackMultiplier(stack, this.maxCount);
+            int index = -1;
+            while(remainingToAdd > 0) {
+                index = getStackMatchIndex(stack, index);
+                if(index == -1) {
+                    this.stacks.addLast(stack.split(remainingToAdd));
+                    break;
+                }
+                if(remainingToAdd + this.stacks.get(index).getCount() <= stack.getMaxCount()) {
+                    this.stacks.get(index).increment(remainingToAdd);
+                    stack.decrement(remainingToAdd);
+                    break;
+                } else {
+                    int k = stack.getMaxCount() - this.stacks.get(index).getCount();
+                    this.stacks.get(index).increment(k);
+                    stack.decrement(k);
+                    remainingToAdd -= k;
+                }
+            }
+            return ADD_ALLOWED;
+        }
+
+        public void decrementAt(int index) {
             if (this.stacks.isEmpty()) return;
-            int count = this.stacks.get(index).getCount();
-            if(count - amount < 1) {
+            this.capacity -= getStackMultiplier(this.stacks.get(index), this.maxCount);
+            if(this.stacks.get(index).getCount() <= 1) {
                 this.stacks.remove(index);
             } else {
-                this.stacks.get(index).decrement(amount);
+                this.stacks.get(index).decrement(1);
             }
-            this.capacity -= amount;
         }
 
         @Nullable
         public ItemStack removeFirst() {
             if (this.stacks.isEmpty()) return null;
             ItemStack itemStack = (this.stacks.removeFirst()).copy();
-            this.capacity -= getStackCapacity(itemStack, this.maxCount) * itemStack.getCount();
+            this.capacity -= getStackMultiplier(itemStack, this.maxCount) * itemStack.getCount();
             return itemStack;
-        }
-
-        public int getCapacity() {
-            return this.capacity;
         }
 
         public AdjustableBundleComponent build() {
