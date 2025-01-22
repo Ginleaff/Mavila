@@ -3,7 +3,6 @@ package mod.ginleaf.quiver.mixin;
 import mod.ginleaf.quiver.item.QuiverItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -13,8 +12,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.Objects;
 
 @Mixin(RangedWeaponItem.class)
 public abstract class RangedWeaponItemMixin extends Item {
@@ -26,7 +23,7 @@ public abstract class RangedWeaponItemMixin extends Item {
     private static void getProjectileInject(ItemStack stack, ItemStack projectileStack, LivingEntity shooter, boolean multishot, CallbackInfoReturnable<ItemStack> cir) {
         if(projectileStack.getItem() instanceof QuiverItem) {
             boolean infinity = EnchantmentHelper.getAmmoUse((ServerWorld) shooter.getWorld(), stack, new ItemStack(Items.ARROW, 64), 1) == 0;
-            ItemStack arrowStack = QuiverItem.getArrow(projectileStack, shooter, infinity, shooter.isInCreativeMode());
+            ItemStack arrowStack = QuiverItem.getArrow(projectileStack, infinity, shooter.isInCreativeMode());
             arrowStack.setHolder(shooter);
             cir.setReturnValue(arrowStack);
         }

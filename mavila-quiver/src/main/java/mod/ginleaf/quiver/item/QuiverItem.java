@@ -4,11 +4,8 @@ import mod.ginleaf.quiver.MavilaQuiver;
 import mod.ginleaf.quiver.component.AdjustableBundleComponent;
 import mod.ginleaf.quiver.item.tooltip.QuiverTooltipData;
 import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.EnchantmentEffectComponentTypes;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.*;
@@ -22,12 +19,9 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class QuiverItem extends Item {
     public static final AdjustableBundleComponent QUIVER_DEFAULT = new AdjustableBundleComponent(List.of(), 256);
@@ -138,7 +132,7 @@ public class QuiverItem extends Item {
         }
     }
 
-    public static ItemStack getArrow(ItemStack quiverStack, LivingEntity shooter, boolean isInfinity, boolean isCreative) {
+    public static ItemStack getArrow(ItemStack quiverStack, boolean isInfinity, boolean isCreative) {
         AdjustableBundleComponent quiverContents = quiverStack.getOrDefault(MavilaQuiver.ADJUSTABLE_BUNDLE_CONTENTS, QuiverItem.QUIVER_DEFAULT);
         AdjustableBundleComponent.Builder builder = new AdjustableBundleComponent.Builder(quiverContents);
         Random random = new Random();

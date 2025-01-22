@@ -1,7 +1,6 @@
 package mod.ginleaf.quiver.mixin;
 
 import mod.ginleaf.quiver.MavilaQuiver;
-import mod.ginleaf.quiver.component.AdjustableBundleComponent;
 import mod.ginleaf.quiver.item.QuiverItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
