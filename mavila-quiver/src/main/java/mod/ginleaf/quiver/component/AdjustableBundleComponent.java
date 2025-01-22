@@ -83,13 +83,22 @@ public record AdjustableBundleComponent(List<ItemStack> stacks, int capacity, in
     }
 
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (!(o instanceof AdjustableBundleComponent bundleComponent)) return false;
-        return this.stacks.equals(bundleComponent.stacks);
+        if (this == o) return true;
+        if (this.maxCount != bundleComponent.maxCount) return false;
+        if (this.capacity != bundleComponent.capacity()) return false;
+        if (this.size() != bundleComponent.size()) return false;
+        return ItemStack.stacksEqual(this.stacks, bundleComponent.stacks);
     }
 
     public int hashCode() {
-        return ItemStack.listHashCode(this.stacks);
+        int total = 31;
+        for(ItemStack stack : this.stacks) {
+            total += stack.getItem().hashCode();
+            total = 31 * total + stack.getComponents().hashCode();
+            total = 31 * total + stack.getCount();
+        }
+        return total;
     }
 
     public String toString() {
